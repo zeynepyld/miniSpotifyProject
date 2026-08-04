@@ -2,10 +2,53 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\UserController;
 
 Route::get('/', function () {
     return view('welcome');
 });
+
+/*
+|--------------------------------------------------------------------------
+| Breeze Routes
+|--------------------------------------------------------------------------
+*/
+
+Route::get('/dashboard', function () {
+    return redirect('/user');
+})->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::middleware('auth')->group(function () {
+
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    /*
+    |--------------------------------------------------------------------------
+    | User Panel
+    |--------------------------------------------------------------------------
+    */
+
+    Route::get('/user', [UserController::class, 'index'])->name('user.dashboard');
+
+    Route::get('/user/albums', [UserController::class, 'albums'])->name('user.albums');
+
+    Route::get('/user/favorites', function () {
+        return view('user.favorites');
+    })->name('user.favorites');
+
+    Route::get('/user/orders', function () {
+        return view('user.orders');
+    })->name('user.orders');
+});
+
+/*
+|--------------------------------------------------------------------------
+| Admin Panel (Eski çalışan panel)
+|--------------------------------------------------------------------------
+*/
 
 Route::get('/admin', function () {
     return view('admin.index');
@@ -31,20 +74,15 @@ Route::get('/admin/reviews/delete/{id}', [AdminController::class, 'reviewsDelete
 Route::get('/admin/orders', [AdminController::class, 'orders'])->name('admin.orders.index');
 
 Route::get('/albums/{id}', [AdminController::class, 'albumDetails'])->name('admin.albums.details');
+
 Route::post('/admin/albums/{id}/add-song', [AdminController::class, 'addSong'])->name('admin.songs.store');
 Route::post('/admin/albums/{id}/add-review', [AdminController::class, 'addReview'])->name('admin.reviews.store');
-Route::get('/admin/orders', [AdminController::class, 'orders'])
-    ->name('admin.orders.index');
 
-Route::get('/admin/orders/details/{id}', [AdminController::class, 'orderDetails'])
-    ->name('admin.orders.details');
+Route::get('/admin/orders/details/{id}', [AdminController::class, 'orderDetails'])->name('admin.orders.details');
+Route::get('/admin/orders/receipt/{id}', [AdminController::class, 'orderReceipt'])->name('admin.orders.receipt');
 
-Route::get('/admin/orders/receipt/{id}', [AdminController::class, 'orderReceipt'])
-    ->name('admin.orders.receipt');
+Route::post('/admin/orders/{id}/delete', [AdminController::class, 'orderDelete'])->name('admin.orders.delete');
+Route::post('/admin/order/place/{id}', [AdminController::class, 'placeOrder'])->name('admin.order.place');
+Route::post('/admin/orders/{id}/status', [AdminController::class, 'orderStatus'])->name('admin.orders.status');
 
-Route::post('/admin/orders/{id}/delete', [AdminController::class, 'orderDelete'])
-    ->name('admin.orders.delete');
-Route::post('/admin/order/place/{id}', [AdminController::class, 'placeOrder'])
-    ->name('admin.order.place');
-Route::post('/admin/orders/{id}/status', [AdminController::class, 'orderStatus'])
-    ->name('admin.orders.status');
+require __DIR__.'/auth.php';
