@@ -11,8 +11,17 @@ class User extends Authenticatable
     use HasFactory, SoftDeletes;
 
     protected $table = 'users';
-    protected $fillable = ['name', 'email', 'password', 'is_admin'];
-    protected $hidden = ['password'];
+
+    protected $fillable = [
+        'name',
+        'email',
+        'password',
+        'is_admin',
+    ];
+
+    protected $hidden = [
+        'password',
+    ];
 
     public function orders()
     {
@@ -22,5 +31,10 @@ class User extends Authenticatable
     public function reviews()
     {
         return $this->hasMany(Review::class, 'user_id');
+    }
+
+    public function favorites()
+    {
+        return $this->hasMany(Favorite::class, 'user_id');
     }
 }

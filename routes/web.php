@@ -4,11 +4,12 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\FavoriteController;
+use App\Http\Controllers\ReviewController;
 
 Route::get('/', function () {
     return view('welcome');
 });
-
 /*
 |--------------------------------------------------------------------------
 | Breeze Routes
@@ -35,13 +36,25 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/user/albums', [UserController::class, 'albums'])->name('user.albums');
 
-    Route::get('/user/favorites', function () {
-        return view('user.favorites');
-    })->name('user.favorites');
+    Route::get('/user/albums/{id}', [UserController::class, 'details'])
+        ->name('user.albums.details');
 
-    Route::get('/user/orders', function () {
-        return view('user.orders');
-    })->name('user.orders');
+    Route::get('/user/favorites', [FavoriteController::class, 'index'])
+        ->name('user.favorites');
+
+    Route::get('/user/orders', [UserController::class, 'orders'])
+        ->name('user.orders');
+
+    Route::post('/user/favorites/{albumId}', [FavoriteController::class, 'store'])
+        ->name('user.favorites.store');
+
+    Route::delete('/user/favorites/{albumId}', [FavoriteController::class, 'destroy'])
+        ->name('user.favorites.destroy');
+
+    Route::post('/reviews/store', [ReviewController::class, 'store'])
+        ->name('reviews.store');
+
+
 });
 
 /*

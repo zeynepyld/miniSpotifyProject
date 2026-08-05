@@ -27,4 +27,10 @@ class Album extends Model
     {
         return $this->hasMany(Review::class, 'album_id');
     }
+
+    public function favorites()
+    {
+        return $this->hasMany(Favorite::class, 'album_id');
+    }
+
 }

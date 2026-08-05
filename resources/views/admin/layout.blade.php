@@ -5,10 +5,11 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
     <title>MusicStore - Panel</title>
 
-    <link href="{{ asset('admin_assets/vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css">
-    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+    <link href="{{ asset('admin_assets/vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,300,400,600,700,800,900" rel="stylesheet">
     <link href="{{ asset('admin_assets/css/sb-admin-2.min.css') }}" rel="stylesheet">
 </head>
 
@@ -16,32 +17,38 @@
 
 <div id="wrapper">
 
+    <!-- Sidebar -->
     <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
-        <!-- Logo / Brand -->
+        <!-- Logo -->
         <a class="sidebar-brand d-flex align-items-center justify-content-center"
-           href="{{ auth()->user()->is_admin ? route('admin.artists.index') : url('/user') }}">
+           href="{{ auth()->user()->is_admin ? route('admin.artists.index') : route('user.dashboard') }}">
+
             <div class="sidebar-brand-icon rotate-n-15">
                 <i class="fas fa-music"></i>
             </div>
-            <div class="sidebar-brand-text mx-3">MusicStore</div>
+
+            <div class="sidebar-brand-text mx-3">
+                MusicStore
+            </div>
         </a>
 
         <hr class="sidebar-divider my-0">
 
-        <!-- ADMIN MENU -->
-        @if(auth()->check() && auth()->user()->is_admin)
+        @if(auth()->user()->is_admin)
+
+            <!-- ADMIN -->
 
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('admin.artists.index') }}">
-                    <i class="fas fa-fw fa-music"></i>
+                    <i class="fas fa-music"></i>
                     <span>Artists</span>
                 </a>
             </li>
 
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('admin.orders.index') }}">
-                    <i class="fas fa-fw fa-shopping-cart"></i>
+                    <i class="fas fa-shopping-cart"></i>
                     <span>Orders</span>
                 </a>
             </li>
@@ -54,39 +61,42 @@
 
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('admin.albums.index') }}">
-                    <i class="fas fa-fw fa-compact-disc"></i>
+                    <i class="fas fa-compact-disc"></i>
                     <span>Albums</span>
                 </a>
             </li>
 
         @else
 
-            <!-- USER MENU -->
+            <!-- USER -->
+
+
+
 
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('user.dashboard') }}">
-                    <i class="fas fa-fw fa-home"></i>
+                    <i class="fas fa-home"></i>
                     <span>Home</span>
                 </a>
             </li>
 
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('user.albums') }}">
-                    <i class="fas fa-fw fa-compact-disc"></i>
+                    <i class="fas fa-compact-disc"></i>
                     <span>Albums & Prices</span>
                 </a>
             </li>
 
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('user.favorites') }}">
-                    <i class="fas fa-fw fa-heart"></i>
+                    <i class="fas fa-heart"></i>
                     <span>Favorites</span>
                 </a>
             </li>
 
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('user.orders') }}">
-                    <i class="fas fa-fw fa-receipt"></i>
+                    <i class="fas fa-receipt"></i>
                     <span>Orders & Receipts</span>
                 </a>
             </li>
@@ -100,11 +110,16 @@
         </div>
 
     </ul>
+    <!-- End Sidebar -->
 
+
+
+    <!-- Content Wrapper -->
     <div id="content-wrapper" class="d-flex flex-column">
 
         <div id="content">
 
+            <!-- Topbar -->
             <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
 
                 <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
@@ -113,18 +128,33 @@
 
                 <ul class="navbar-nav ml-auto">
 
-                    <li class="nav-item dropdown no-arrow">
+                    <li class="nav-item d-flex align-items-center">
 
-                        <span class="mr-2 d-none d-lg-inline text-gray-600 small font-weight-bold">
+                        <span class="mr-3 font-weight-bold text-gray-700">
                             {{ auth()->user()->name }}
-                            ({{ auth()->user()->is_admin ? 'Admin' : 'Regular User' }})
+                            ({{ auth()->user()->is_admin ? 'Admin' : 'User' }})
                         </span>
+
+                    </li>
+
+                    <li class="nav-item">
+
+                        <form method="POST" action="{{ route('logout') }}">
+                            @csrf
+
+                            <button class="btn btn-danger btn-sm">
+                                <i class="fas fa-sign-out-alt"></i>
+                                Logout
+                            </button>
+
+                        </form>
 
                     </li>
 
                 </ul>
 
             </nav>
+            <!-- End Topbar -->
 
             <div class="container-fluid">
                 @yield('content')
@@ -134,8 +164,8 @@
 
         <footer class="sticky-footer bg-white">
             <div class="container my-auto">
-                <div class="copyright text-center my-auto">
-                    <span>Copyright &copy; MusicStore 2026</span>
+                <div class="text-center my-auto">
+                    <span>Copyright © MusicStore 2026</span>
                 </div>
             </div>
         </footer>
