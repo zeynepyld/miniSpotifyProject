@@ -10,8 +10,12 @@ class Review extends Model
     use HasFactory;
 
     protected $table = 'reviews';
-    protected $fillable = ['album_id', 'user_id', 'comment'];
-
+    protected $fillable = [
+        'user_id',
+        'album_id',
+        'comment',
+        'rating',
+    ];
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');

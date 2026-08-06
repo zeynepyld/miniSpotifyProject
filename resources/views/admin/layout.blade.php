@@ -31,6 +31,7 @@
             <div class="sidebar-brand-text mx-3">
                 MusicStore
             </div>
+
         </a>
 
         <hr class="sidebar-divider my-0">
@@ -39,16 +40,16 @@
 
             <!-- ADMIN -->
 
-            <li class="nav-item">
+            <li class="nav-item {{ request()->routeIs('admin.artists*') ? 'active' : '' }}">
                 <a class="nav-link" href="{{ route('admin.artists.index') }}">
-                    <i class="fas fa-music"></i>
+                    <i class="fas fa-fw fa-music"></i>
                     <span>Artists</span>
                 </a>
             </li>
 
-            <li class="nav-item">
+            <li class="nav-item {{ request()->routeIs('admin.orders*') ? 'active' : '' }}">
                 <a class="nav-link" href="{{ route('admin.orders.index') }}">
-                    <i class="fas fa-shopping-cart"></i>
+                    <i class="fas fa-fw fa-shopping-cart"></i>
                     <span>Orders</span>
                 </a>
             </li>
@@ -59,9 +60,9 @@
                 Management
             </div>
 
-            <li class="nav-item">
+            <li class="nav-item {{ request()->routeIs('admin.albums*') ? 'active' : '' }}">
                 <a class="nav-link" href="{{ route('admin.albums.index') }}">
-                    <i class="fas fa-compact-disc"></i>
+                    <i class="fas fa-fw fa-compact-disc"></i>
                     <span>Albums</span>
                 </a>
             </li>
@@ -70,33 +71,42 @@
 
             <!-- USER -->
 
-
-
-
-            <li class="nav-item">
+            <li class="nav-item {{ request()->routeIs('user.dashboard') ? 'active' : '' }}">
                 <a class="nav-link" href="{{ route('user.dashboard') }}">
-                    <i class="fas fa-home"></i>
+                    <i class="fas fa-fw fa-home"></i>
                     <span>Home</span>
                 </a>
             </li>
 
-            <li class="nav-item">
+            <hr class="sidebar-divider">
+
+            <div class="sidebar-heading">
+                Music
+            </div>
+
+            <li class="nav-item {{ request()->routeIs('user.albums*') ? 'active' : '' }}">
                 <a class="nav-link" href="{{ route('user.albums') }}">
-                    <i class="fas fa-compact-disc"></i>
-                    <span>Albums & Prices</span>
+                    <i class="fas fa-fw fa-compact-disc"></i>
+                    <span>Albums</span>
                 </a>
             </li>
 
-            <li class="nav-item">
+            <li class="nav-item {{ request()->routeIs('user.favorites*') ? 'active' : '' }}">
                 <a class="nav-link" href="{{ route('user.favorites') }}">
-                    <i class="fas fa-heart"></i>
+                    <i class="fas fa-fw fa-heart"></i>
                     <span>Favorites</span>
                 </a>
             </li>
 
-            <li class="nav-item">
+            <hr class="sidebar-divider">
+
+            <div class="sidebar-heading">
+                Purchases
+            </div>
+
+            <li class="nav-item {{ request()->routeIs('user.orders*') ? 'active' : '' }}">
                 <a class="nav-link" href="{{ route('user.orders') }}">
-                    <i class="fas fa-receipt"></i>
+                    <i class="fas fa-fw fa-shopping-cart"></i>
                     <span>Orders & Receipts</span>
                 </a>
             </li>
@@ -111,7 +121,6 @@
 
     </ul>
     <!-- End Sidebar -->
-
 
 
     <!-- Content Wrapper -->
@@ -154,7 +163,6 @@
                 </ul>
 
             </nav>
-            <!-- End Topbar -->
 
             <div class="container-fluid">
                 @yield('content')

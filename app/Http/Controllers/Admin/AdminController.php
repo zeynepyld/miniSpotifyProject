@@ -105,13 +105,28 @@ class AdminController extends Controller
             'artist_id' => 'required|integer|exists:artist,id',
             'genre' => 'required|string|max:100',
             'price' => 'required|numeric|min:0',
-            'stock' => 'required|integer|min:0',]);
+            'stock' => 'required|integer|min:0',
+            'cover_image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+        ]);
+        $coverImage = null;
+
+        if ($request->hasFile('cover_image')) {
+
+            $file = $request->file('cover_image');
+
+            $fileName = time() . '_' . $file->getClientOriginalName();
+
+            $file->move(public_path('uploads/albums'), $fileName);
+
+            $coverImage = 'uploads/albums/' . $fileName;
+        }
         DB::table('_albums')->insert([
             'title' => $request->input('title'),
             'artist_id' => $request->input('artist_id'),
             'genre' => $request->input('genre'),
             'price' => $request->input('price'),
             'stock' => $request->input('stock'),
+            'cover_image' => $coverImage,
             'created_at' => now(),
             'updated_at' => now(),
         ]);
@@ -139,16 +154,36 @@ class AdminController extends Controller
             'genre' => 'required|string|max:100',
             'price' => 'required|numeric|min:0',
             'stock' => 'required|integer|min:0',
+            'cover_image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
         ]);
-        DB::table('_albums')->where('id', $id)->update([
-            'title' => $request->input('title'),
-            'artist_id' => $request->input('artist_id'),
-            'genre' => $request->input('genre'),
-            'price' => $request->input('price'),
-            'stock' => $request->input('stock'),
+
+        $data = [
+            'title' => $request->title,
+            'artist_id' => $request->artist_id,
+            'genre' => $request->genre,
+            'price' => $request->price,
+            'stock' => $request->stock,
             'updated_at' => now(),
-        ]);
-        return redirect()->route('admin.albums.index')->with('success', 'Album updated!');
+        ];
+
+        if ($request->hasFile('cover_image')) {
+
+            $image = $request->file('cover_image');
+
+            $imageName = time() . '_' . $image->getClientOriginalName();
+
+            $image->move(public_path('uploads/albums'), $imageName);
+
+            $data['cover_image'] = 'uploads/albums/' . $imageName;
+        }
+
+        DB::table('_albums')
+            ->where('id', $id)
+            ->update($data);
+
+        return redirect()
+            ->route('admin.albums.index')
+            ->with('success', 'Album updated successfully!');
     }
 
     public function albumDetails($id)

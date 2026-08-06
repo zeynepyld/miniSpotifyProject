@@ -1,33 +1,118 @@
 @extends('admin.layout')
 
 @section('content')
+
     <div class="container-fluid">
 
-        <!-- Page Heading -->
-        <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">User Dashboard</h1>
+        <h1 class="h3 mb-4 text-gray-800">
+            Welcome {{ auth()->user()->name }} 🎵
+        </h1>
+
+        <div class="alert alert-primary">
+            Welcome to <strong>MusicStore</strong>.
+            Browse albums, purchase music, leave reviews and manage your favorites.
         </div>
 
-        <!-- Content Row -->
-        <div class="row">
-            <div class="col-xl-12 col-lg-12">
-                <div class="card shadow mb-4">
-                    <div class="card-header py-3 bg-success text-white">
-                        <h6 class="m-0 font-weight-bold">Welcome to the User Panel!</h6>
-                    </div>
-                    <div class="card-body">
-                        <p class="mb-4">This area is reserved for regular members and music listeners.</p>
+        <hr>
 
-                        <form action="{{ route('logout') }}" method="POST">
-                            @csrf
-                            <button type="submit" class="btn btn-danger">
-                                <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2"></i> Logout
-                            </button>
-                        </form>
+        <h3 class="mb-4">
+            🏆 Top Rated Albums
+        </h3>
+
+        <div class="row">
+
+            @forelse($topAlbums as $album)
+
+                @php
+                    $average = round($album->reviews->avg('rating'),1);
+                @endphp
+
+                <div class="col-lg-4">
+
+                    <div class="card shadow mb-4">
+
+                        @if($album->cover_image)
+
+                            <img src="{{ asset($album->cover_image) }}"
+                                 style="height:280px;object-fit:cover;">
+
+                        @endif
+
+                        <div class="card-body text-center">
+
+                            <h4>{{ $album->title }}</h4>
+
+                            <p class="text-muted">
+                                {{ $album->artist->name }}
+                            </p>
+
+                            <h5 class="text-success">
+                                {{ $album->price }} ₺
+                            </h5>
+
+                            <div style="font-size:22px">
+
+                                @for($i=1;$i<=5;$i++)
+
+                                    @if($i<=round($average))
+
+                                        <span style="color:gold;">★</span>
+
+                                    @else
+
+                                        <span style="color:#ddd;">★</span>
+
+                                    @endif
+
+                                @endfor
+
+                            </div>
+
+                            <strong>
+
+                                {{ $average }}/5
+
+                            </strong>
+
+                            <br>
+
+                            <small class="text-muted">
+
+                                {{ $album->reviews->count() }} Reviews
+
+                            </small>
+
+                            <br><br>
+
+                            <a href="{{ route('user.albums.details',$album->id) }}"
+                               class="btn btn-primary btn-block">
+
+                                View Album
+
+                            </a>
+
+                        </div>
+
                     </div>
+
                 </div>
-            </div>
+
+            @empty
+
+                <div class="col-12">
+
+                    <div class="alert alert-warning">
+
+                        No rated albums yet.
+
+                    </div>
+
+                </div>
+
+            @endforelse
+
         </div>
 
     </div>
+
 @endsection

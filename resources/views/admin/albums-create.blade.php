@@ -6,7 +6,7 @@
             <h6 class="m-0 font-weight-bold text-primary">Add New Album</h6>
         </div>
         <div class="card-body">
-            <form action="{{ route('admin.albums.store') }}" method="POST">
+            <form action="{{ route('admin.albums.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="form-group">
                     <label>Album Title</label>
@@ -41,6 +41,16 @@
                 <div class="form-group">
                     <label>Stock</label>
                     <input type="number" name="stock" class="form-control" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Album Cover</label>
+
+                    <input
+                        type="file"
+                        name="cover_image"
+                        class="form-control"
+                        accept="image/*">
                 </div>
 
                 <button type="submit" class="btn btn-primary">Save Album</button>
