@@ -28,6 +28,43 @@
 
         <div class="card-body">
 
+            <form method="GET" action="{{ route('user.albums') }}" class="mb-4">
+
+                <label>
+                    Filter By Artist
+                </label>
+
+                <select
+                    name="artist_id"
+                    class="form-control"
+                    onchange="this.form.submit()">
+
+                    <option value="">
+                        All Artists
+                    </option>
+
+
+                    @foreach($artists as $artist)
+
+                        <option
+                            value="{{ $artist->id }}"
+                            {{ request('artist_id') == $artist->id ? 'selected' : '' }}
+                        >
+
+                            {{ $artist->name }}
+
+                        </option>
+
+                    @endforeach
+
+
+                </select>
+
+            </form>
+
+            <form method="GET" action="{{ route('user.albums') }}" class="mb-3">
+
+
             <div class="table-responsive">
 
                 <table class="table table-bordered" width="100%" cellspacing="0">

@@ -38,32 +38,60 @@
 
         @if(auth()->user()->is_admin)
 
-            <!-- ADMIN -->
+            <!-- HOME -->
 
-            <li class="nav-item {{ request()->routeIs('admin.artists*') ? 'active' : '' }}">
-                <a class="nav-link" href="{{ route('admin.artists.index') }}">
-                    <i class="fas fa-fw fa-music"></i>
-                    <span>Artists</span>
-                </a>
-            </li>
-
-            <li class="nav-item {{ request()->routeIs('admin.orders*') ? 'active' : '' }}">
-                <a class="nav-link" href="{{ route('admin.orders.index') }}">
-                    <i class="fas fa-fw fa-shopping-cart"></i>
-                    <span>Orders</span>
+            <li class="nav-item {{ request()->routeIs('admin.index') ? 'active' : '' }}">
+                <a class="nav-link" href="{{ route('admin.index') }}">
+                    <i class="fas fa-fw fa-home"></i>
+                    <span>Home</span>
                 </a>
             </li>
 
             <hr class="sidebar-divider">
 
             <div class="sidebar-heading">
-                Management
+                Music
             </div>
+
+            <!-- ARTISTS -->
+
+            <li class="nav-item {{ request()->routeIs('admin.artists*') ? 'active' : '' }}">
+                <a class="nav-link" href="{{ route('admin.artists.index') }}">
+                    <i class="fas fa-fw fa-user"></i>
+                    <span>Artists</span>
+                </a>
+            </li>
+
+            <!-- ALBUMS -->
 
             <li class="nav-item {{ request()->routeIs('admin.albums*') ? 'active' : '' }}">
                 <a class="nav-link" href="{{ route('admin.albums.index') }}">
                     <i class="fas fa-fw fa-compact-disc"></i>
                     <span>Albums</span>
+                </a>
+            </li>
+
+            <!-- REVIEWS -->
+
+            <li class="nav-item {{ request()->routeIs('admin.reviews*') ? 'active' : '' }}">
+                <a class="nav-link" href="{{ route('admin.reviews.index') }}">
+                    <i class="fas fa-fw fa-star"></i>
+                    <span>Reviews</span>
+                </a>
+            </li>
+
+            <hr class="sidebar-divider">
+
+            <div class="sidebar-heading">
+                Purchases
+            </div>
+
+            <!-- ORDERS -->
+
+            <li class="nav-item {{ request()->routeIs('admin.orders*') ? 'active' : '' }}">
+                <a class="nav-link" href="{{ route('admin.orders.index') }}">
+                    <i class="fas fa-fw fa-shopping-cart"></i>
+                    <span>Orders</span>
                 </a>
             </li>
 

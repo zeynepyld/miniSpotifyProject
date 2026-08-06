@@ -363,5 +363,22 @@ class AdminController extends Controller
 
         return redirect()->back()->with('success', 'Order status updated successfully!');
     }
+    public function index()
+    {
+        $albumCount = \App\Models\Album::count();
+        $artistCount = \DB::table('artist')->count();
+        $reviewCount = \App\Models\Review::count();
+        $orderCount = \App\Models\Order::count();
+
+        $latestAlbums = \App\Models\Album::latest()->take(5)->get();
+
+        return view('admin.index', compact(
+            'albumCount',
+            'artistCount',
+            'reviewCount',
+            'orderCount',
+            'latestAlbums'
+        ));
+    }
 
    }

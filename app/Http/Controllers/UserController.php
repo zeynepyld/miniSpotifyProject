@@ -6,7 +6,7 @@ use App\Models\Album;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Order;
-
+use App\Models\Artist;
 class UserController extends Controller
 {
     public function index()
@@ -21,11 +21,23 @@ class UserController extends Controller
         return view('user.index', compact('topAlbums'));
     }
 
-    public function albums()
+    public function albums(Request $request)
     {
-        $albums = Album::with(['artist','reviews'])->get();
+        $query = Album::with(['artist','reviews']);
 
-        return view('user.albums', compact('albums'));
+        if($request->artist_id)
+        {
+            $query->where('artist_id',$request->artist_id);
+        }
+
+        $albums = $query->get();
+
+        $artists = Artist::all();
+
+        return view('user.albums', compact(
+            'albums',
+            'artists'
+        ));
     }
 
     public function albumDetails($id)
