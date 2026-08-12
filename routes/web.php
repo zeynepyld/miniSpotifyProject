@@ -33,7 +33,10 @@ Route::middleware('auth')->group(function () {
     */
 
     Route::get('/user', [UserController::class, 'index'])->name('user.dashboard');
-
+    Route::get('/user/artists', [UserController::class, 'artists'])
+        ->name('user.artists');
+    Route::get('/user/artists/{id}', [UserController::class, 'artistDetails'])
+        ->name('user.artist.details');
     Route::get('/user/albums', [UserController::class, 'albums'])->name('user.albums');
 
     Route::get('/user/albums/{id}', [UserController::class, 'details'])

@@ -17,12 +17,15 @@
 
 <div id="wrapper">
 
-    <!-- Sidebar -->
-    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+    <!-- SIDEBAR -->
+    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion"
+        id="accordionSidebar">
 
-        <!-- Logo -->
+        <!-- LOGO -->
         <a class="sidebar-brand d-flex align-items-center justify-content-center"
-           href="{{ auth()->user()->is_admin ? route('admin.artists.index') : route('user.dashboard') }}">
+           href="{{ auth()->user()->is_admin
+                    ? route('admin.index')
+                    : route('user.dashboard') }}">
 
             <div class="sidebar-brand-icon rotate-n-15">
                 <i class="fas fa-music"></i>
@@ -36,152 +39,267 @@
 
         <hr class="sidebar-divider my-0">
 
+
+        {{-- =====================================================
+             ADMIN SIDEBAR
+        ====================================================== --}}
+
         @if(auth()->user()->is_admin)
 
             <!-- HOME -->
-
             <li class="nav-item {{ request()->routeIs('admin.index') ? 'active' : '' }}">
+
                 <a class="nav-link" href="{{ route('admin.index') }}">
+
                     <i class="fas fa-fw fa-home"></i>
+
                     <span>Home</span>
+
                 </a>
+
             </li>
 
+
             <hr class="sidebar-divider">
+
 
             <div class="sidebar-heading">
                 Music
             </div>
 
-            <!-- ARTISTS -->
 
+            <!-- ARTISTS -->
             <li class="nav-item {{ request()->routeIs('admin.artists*') ? 'active' : '' }}">
-                <a class="nav-link" href="{{ route('admin.artists.index') }}">
+
+                <a class="nav-link"
+                   href="{{ route('admin.artists.index') }}">
+
                     <i class="fas fa-fw fa-user"></i>
+
                     <span>Artists</span>
+
                 </a>
+
             </li>
+
 
             <!-- ALBUMS -->
-
             <li class="nav-item {{ request()->routeIs('admin.albums*') ? 'active' : '' }}">
-                <a class="nav-link" href="{{ route('admin.albums.index') }}">
+
+                <a class="nav-link"
+                   href="{{ route('admin.albums.index') }}">
+
                     <i class="fas fa-fw fa-compact-disc"></i>
+
                     <span>Albums</span>
+
                 </a>
+
             </li>
+
 
             <!-- REVIEWS -->
-
             <li class="nav-item {{ request()->routeIs('admin.reviews*') ? 'active' : '' }}">
-                <a class="nav-link" href="{{ route('admin.reviews.index') }}">
+
+                <a class="nav-link"
+                   href="{{ route('admin.reviews.index') }}">
+
                     <i class="fas fa-fw fa-star"></i>
+
                     <span>Reviews</span>
+
                 </a>
+
             </li>
 
+
             <hr class="sidebar-divider">
+
 
             <div class="sidebar-heading">
                 Purchases
             </div>
 
-            <!-- ORDERS -->
 
+            <!-- ORDERS -->
             <li class="nav-item {{ request()->routeIs('admin.orders*') ? 'active' : '' }}">
-                <a class="nav-link" href="{{ route('admin.orders.index') }}">
+
+                <a class="nav-link"
+                   href="{{ route('admin.orders.index') }}">
+
                     <i class="fas fa-fw fa-shopping-cart"></i>
+
                     <span>Orders</span>
+
                 </a>
+
             </li>
+
+
+            {{-- =====================================================
+                 USER SIDEBAR
+            ====================================================== --}}
 
         @else
 
-            <!-- USER -->
-
+            <!-- HOME -->
             <li class="nav-item {{ request()->routeIs('user.dashboard') ? 'active' : '' }}">
-                <a class="nav-link" href="{{ route('user.dashboard') }}">
+
+                <a class="nav-link"
+                   href="{{ route('user.dashboard') }}">
+
                     <i class="fas fa-fw fa-home"></i>
+
                     <span>Home</span>
+
                 </a>
+
             </li>
 
+
             <hr class="sidebar-divider">
+
 
             <div class="sidebar-heading">
                 Music
             </div>
 
-            <li class="nav-item {{ request()->routeIs('user.albums*') ? 'active' : '' }}">
-                <a class="nav-link" href="{{ route('user.albums') }}">
-                    <i class="fas fa-fw fa-compact-disc"></i>
-                    <span>Albums</span>
+
+            <!-- ARTISTS -->
+            <li class="nav-item {{ request()->routeIs('user.artists*') ? 'active' : '' }}">
+
+                <a class="nav-link"
+                   href="{{ route('user.artists') }}">
+
+                    <i class="fas fa-fw fa-user"></i>
+
+                    <span>Artists</span>
+
                 </a>
+
             </li>
 
-            <li class="nav-item {{ request()->routeIs('user.favorites*') ? 'active' : '' }}">
-                <a class="nav-link" href="{{ route('user.favorites') }}">
-                    <i class="fas fa-fw fa-heart"></i>
-                    <span>Favorites</span>
+
+            <!-- ALBUMS -->
+            <li class="nav-item {{ request()->routeIs('user.albums*') ? 'active' : '' }}">
+
+                <a class="nav-link"
+                   href="{{ route('user.albums') }}">
+
+                    <i class="fas fa-fw fa-compact-disc"></i>
+
+                    <span>Albums</span>
+
                 </a>
+
             </li>
+
+
+            <!-- FAVORITES -->
+            <li class="nav-item {{ request()->routeIs('user.favorites*') ? 'active' : '' }}">
+
+                <a class="nav-link"
+                   href="{{ route('user.favorites') }}">
+
+                    <i class="fas fa-fw fa-heart"></i>
+
+                    <span>Favorites</span>
+
+                </a>
+
+            </li>
+
 
             <hr class="sidebar-divider">
+
 
             <div class="sidebar-heading">
                 Purchases
             </div>
 
+
+            <!-- ORDERS -->
             <li class="nav-item {{ request()->routeIs('user.orders*') ? 'active' : '' }}">
-                <a class="nav-link" href="{{ route('user.orders') }}">
+
+                <a class="nav-link"
+                   href="{{ route('user.orders') }}">
+
                     <i class="fas fa-fw fa-shopping-cart"></i>
+
                     <span>Orders & Receipts</span>
+
                 </a>
+
             </li>
 
         @endif
 
+
         <hr class="sidebar-divider d-none d-md-block">
 
+
+        <!-- SIDEBAR TOGGLE -->
         <div class="text-center d-none d-md-inline">
-            <button class="rounded-circle border-0" id="sidebarToggle"></button>
+
+            <button class="rounded-circle border-0"
+                    id="sidebarToggle">
+            </button>
+
         </div>
 
     </ul>
-    <!-- End Sidebar -->
+    <!-- END SIDEBAR -->
 
 
-    <!-- Content Wrapper -->
-    <div id="content-wrapper" class="d-flex flex-column">
+    <!-- CONTENT WRAPPER -->
+    <div id="content-wrapper"
+         class="d-flex flex-column">
 
         <div id="content">
 
-            <!-- Topbar -->
+
+            <!-- TOPBAR -->
             <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
 
-                <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                <button id="sidebarToggleTop"
+                        class="btn btn-link d-md-none rounded-circle mr-3">
+
                     <i class="fa fa-bars"></i>
+
                 </button>
+
 
                 <ul class="navbar-nav ml-auto">
 
+
+                    <!-- USER NAME -->
                     <li class="nav-item d-flex align-items-center">
 
                         <span class="mr-3 font-weight-bold text-gray-700">
+
                             {{ auth()->user()->name }}
+
                             ({{ auth()->user()->is_admin ? 'Admin' : 'User' }})
+
                         </span>
 
                     </li>
 
+
+                    <!-- LOGOUT -->
                     <li class="nav-item">
 
-                        <form method="POST" action="{{ route('logout') }}">
+                        <form method="POST"
+                              action="{{ route('logout') }}">
+
                             @csrf
 
                             <button class="btn btn-danger btn-sm">
+
                                 <i class="fas fa-sign-out-alt"></i>
+
                                 Logout
+
                             </button>
 
                         </form>
@@ -192,32 +310,60 @@
 
             </nav>
 
+
+            <!-- PAGE CONTENT -->
             <div class="container-fluid">
+
                 @yield('content')
+
             </div>
+
 
         </div>
 
+
+        <!-- FOOTER -->
         <footer class="sticky-footer bg-white">
+
             <div class="container my-auto">
+
                 <div class="text-center my-auto">
-                    <span>Copyright © MusicStore 2026</span>
+
+                    <span>
+                        Copyright © MusicStore 2026
+                    </span>
+
                 </div>
+
             </div>
+
         </footer>
+
 
     </div>
 
 </div>
 
-<a class="scroll-to-top rounded" href="#page-top">
+
+<!-- SCROLL TO TOP -->
+<a class="scroll-to-top rounded"
+   href="#page-top">
+
     <i class="fas fa-angle-up"></i>
+
 </a>
 
+
+<!-- SCRIPTS -->
 <script src="{{ asset('admin_assets/vendor/jquery/jquery.min.js') }}"></script>
+
 <script src="{{ asset('admin_assets/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+
 <script src="{{ asset('admin_assets/vendor/jquery-easing/jquery.easing.min.js') }}"></script>
+
 <script src="{{ asset('admin_assets/js/sb-admin-2.min.js') }}"></script>
 
+
 </body>
+
 </html>

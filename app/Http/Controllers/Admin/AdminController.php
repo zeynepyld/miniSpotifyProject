@@ -10,6 +10,7 @@ use App\Models\Review;
 use App\Models\Song;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 
 class AdminController extends Controller
 {
@@ -29,7 +30,8 @@ class AdminController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'bio' => 'nullable|string|max:1000',
+            'bio' => 'nullable|string|max:5000',
+            'profile_image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
         ]);
 
         $exists = DB::table('artist')
@@ -42,9 +44,28 @@ class AdminController extends Controller
                 ->with('error', 'Bu sanatçı zaten mevcut!');
         }
 
+        $profileImage = null;
+
+        if ($request->hasFile('profile_image')) {
+
+            $file = $request->file('profile_image');
+
+            $fileName = time() . '_' . $file->getClientOriginalName();
+
+            $file->move(
+                public_path('uploads/artists'),
+                $fileName
+            );
+
+            $profileImage = 'uploads/artists/' . $fileName;
+        }
+
         DB::table('artist')->insert([
             'name' => $request->input('name'),
             'bio' => $request->input('bio'),
+            'profile_image' => $profileImage,
+            'created_at' => now(),
+            'updated_at' => now(),
         ]);
 
         return redirect()
@@ -56,14 +77,45 @@ class AdminController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'bio' => 'nullable|string|max:1000',
+            'bio' => 'nullable|string|max:5000',
+            'profile_image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
         ]);
 
-        DB::table('artist')->where('id', $id)->update([
+
+        $data = [
             'name' => $request->input('name'),
             'bio' => $request->input('bio'),
-        ]);
-        return redirect()->route('admin.artists.index');
+            'updated_at' => now(),
+        ];
+
+        if ($request->hasFile('profile_image')) {
+
+            $file = $request->file('profile_image');
+
+            // Klasörün var olduğundan emin ol
+            $uploadPath = public_path('uploads/artists');
+
+            if (!File::exists($uploadPath)) {
+                File::makeDirectory($uploadPath, 0755, true);
+            }
+
+            // Güvenli dosya adı oluştur
+            $fileName = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+
+            // Dosyayı kaydet
+            $file->move($uploadPath, $fileName);
+
+            // Veritabanına dosyanın yolunu kaydet
+            $data['profile_image'] = 'uploads/artists/' . $fileName;
+        }
+
+        DB::table('artist')
+            ->where('id', $id)
+            ->update($data);
+
+        return redirect()
+            ->route('admin.artists.index')
+            ->with('success', 'Sanatçı başarıyla güncellendi!');
     }
 
     public function artistsDelete($id)

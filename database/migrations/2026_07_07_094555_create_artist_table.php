@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('bio');
             $table->softDeletes();
             $table->timestamps();
+            $table->string('profile_image')->nullable();
 
 
         });

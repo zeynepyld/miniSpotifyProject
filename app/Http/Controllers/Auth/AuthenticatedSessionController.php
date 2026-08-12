@@ -30,10 +30,12 @@ class AuthenticatedSessionController extends Controller
 
         $user = Auth::user();
 
+        // Admin kullanıcı giriş yaptığında Admin Home'a gider
         if ($user->is_admin) {
-            return redirect('/admin/artists');
+            return redirect('/admin');
         }
 
+        // Normal kullanıcı giriş yaptığında User Home'a gider
         return redirect('/user');
     }
 

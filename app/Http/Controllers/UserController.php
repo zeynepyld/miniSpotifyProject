@@ -21,6 +21,19 @@ class UserController extends Controller
         return view('user.index', compact('topAlbums'));
     }
 
+    public function artists()
+    {
+        $artists = Artist::all();
+
+        return view('user.artists', compact('artists'));
+    }
+    public function artistDetails($id)
+    {
+        $artist = Artist::findOrFail($id);
+
+        return view('user.artist-details', compact('artist'));
+    }
+
     public function albums(Request $request)
     {
         $query = Album::with(['artist','reviews']);
